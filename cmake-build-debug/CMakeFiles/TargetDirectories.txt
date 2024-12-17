@@ -1,0 +1,3 @@
+C:/banana_code/laba_sort/cmake-build-debug/CMakeFiles/laba_sort.dir
+C:/banana_code/laba_sort/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/banana_code/laba_sort/cmake-build-debug/CMakeFiles/rebuild_cache.dir

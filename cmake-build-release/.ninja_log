@@ -1,0 +1,9 @@
+# ninja log v6
+13	131	7561361645999936	CMakeFiles/laba_sort.dir/main.c.obj	53e4ea87325b1bfd
+10	315	7561359896388712	CMakeFiles/laba_sort.dir/sort.c.obj	bba91b954fdc68c
+22	282	7561358023668791	CMakeFiles/laba_sort.dir/logic.c.obj	b59239c3059a47c4
+132	279	7561361647181553	laba_sort.exe	c9148959f8aa3878
+10	141	7561364522920208	CMakeFiles/laba_sort.dir/main.c.obj	53e4ea87325b1bfd
+142	286	7561364524241451	laba_sort.exe	c9148959f8aa3878
+10	136	7561367085596451	CMakeFiles/laba_sort.dir/main.c.obj	53e4ea87325b1bfd
+137	272	7561367086855732	laba_sort.exe	c9148959f8aa3878
