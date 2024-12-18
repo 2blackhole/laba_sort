@@ -19,4 +19,3 @@ void test_n(void (*sort) (double* a, int n), int n, array_key array_key, bool pr
 void test_se(void (*sort) (double* a, int s, int e), int n, array_key array_key, bool print_arrays);
 
 void test_int(void (*sort) (int* a, size_t n), size_t n, array_key array_key, bool print_arrays);
-

@@ -2,6 +2,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+
+
 
 void swap(double *a, double *b) {
     double temp = *a;
@@ -158,10 +162,10 @@ int partition_h(double *arr, int start, int end) {
 
 void quick_sort(double *arr, int start, int end) {
 
-    if (end <= start) return;
+    if (start >= end) return;
 
-    int pivot = partition_l(arr, start, end);
-    quick_sort(arr, start, pivot - 1);
+    int pivot = partition_h(arr, start, end);
+    quick_sort(arr, start, pivot);
     quick_sort(arr, pivot + 1, end);
 
     // if (end - start <= 1) return;
@@ -180,64 +184,64 @@ void quick_sort(double *arr, int start, int end) {
 
 void counting_sort(int *arr, size_t n)
 {
-    // int i;
-    // int p = 0;
-    // int min = 2e9;
-    // int max = -2e9;
-    // for (i = 0; i < n; ++i)
-    // {
-    //     if (arr[i] < min)
-    //         min = arr[i];
-    //     if (arr[i] > max)
-    //         max = arr[i];
-    // }
-    //
-    // int* auxArr = (int*) malloc((max - min + 1) * sizeof(int));
-    // for (i = 0; i <= max - min; ++i)
-    //     auxArr[i] = 0;
-    // for (i = 0; i < n; ++i)
-    //     ++auxArr[arr[i] - min];
-    //
-    // for (i = 0; i <= max - min; ++i)
-    // {
-    //     while (auxArr[i]--)
-    //     {
-    //         arr[p++] = min + i;
-    //     }
-    // }
-    //
-    // free(auxArr);
-    int max = max_int(arr, n);
-
-    int* a = (int*)malloc(sizeof(int) * max + 1);
-
-    for (int i = 0; i <= max; i++) {
-        a[i] = 0;
+    int i;
+    int p = 0;
+    int min = 2e9;
+    int max = -2e9;
+    for (i = 0; i < n; ++i)
+    {
+        if (arr[i] < min)
+            min = arr[i];
+        if (arr[i] > max)
+            max = arr[i];
     }
 
-    for (int i = 0; i < n; i++) {
-        a[arr[i]]++;
-    }
+    int* auxArr = (int*) malloc((max - min + 1) * sizeof(int));
+    for (i = 0; i <= max - min; ++i)
+        auxArr[i] = 0;
+    for (i = 0; i < n; ++i)
+        ++auxArr[arr[i] - min];
 
-    int j = 0;
-    for (int i = 0; i <= max; i++) {
-        while (a[i] > 0) {
-            arr[j++] = i;
-            a[i]--;
+    for (i = 0; i <= max - min; ++i)
+    {
+        while (auxArr[i]--)
+        {
+            arr[p++] = min + i;
         }
     }
 
-    free(a);
+    free(auxArr);
+    // int max = max_int(arr, n);
+    //
+    // int* a = (int*)malloc(sizeof(int) * max + 1);
+    //
+    // for (int i = 0; i <= max; i++) {
+    //     a[i] = 0;
+    // }
+    //
+    // for (int i = 0; i < n; i++) {
+    //     a[arr[i]]++;
+    // }
+    //
+    // int j = 0;
+    // for (int i = 0; i <= max; i++) {
+    //     while (a[i] > 0) {
+    //         arr[j++] = i;
+    //         a[i]--;
+    //     }
+    // }
+    //
+    // free(a);
 }
 
-void radix_sort(int* arr, size_t n) {
-    // int max = max_int(arr, n);
-    // int auxArr[10];
-    //
-    // int i = 0;
-    // while (max / (i * 10) != 0);
-    //IN PROGRESS
-}
+// void radix_sort(int* arr, size_t n) {
+//     // int max = max_int(arr, n);
+//     // int auxArr[10];
+//     //
+//     // int i = 0;
+//     // while (max / (i * 10) != 0);
+//     //IN PROGRESS
+// }
 
 
 
@@ -292,4 +296,50 @@ void bucket_sort(int* arr, size_t n)
         k += buckets[i].count;
         free(buckets[i].values);
     }
+}
+
+void sort_step(unsigned int *source, unsigned int *dest, unsigned int *offset, int num, size_t length) {
+    int i;
+    unsigned int temp;
+    unsigned char k;
+    for (i = length - 1; i >= 0; i--) {
+        temp = source[i];
+        k = (temp >> num) & 0xFF;
+        offset[k]--;
+        dest[offset[k]] = temp;
+    }
+}
+
+void radix_sort(unsigned int *m, size_t length) {
+    unsigned int s[LONGWORD_SIZE][ARRAY_SIZE] = {0};
+    unsigned int *m_temp = (unsigned int *)malloc(length * sizeof(unsigned int));
+    unsigned int i, k;
+    unsigned int offset[LONGWORD_SIZE][ARRAY_SIZE] = {0};
+
+    for (i = 0; i < length; i++) {
+        k = m[i];
+        s[0][(k >> 0) & 0xFF]++;
+        s[1][(k >> 8) & 0xFF]++;
+        s[2][(k >> 16) & 0xFF]++;
+        s[3][(k >> 24) & 0xFF]++;
+    }
+
+    for (i = 1; i < ARRAY_SIZE; i++) {
+        s[0][i] += s[0][i - 1];
+        s[1][i] += s[1][i - 1];
+        s[2][i] += s[2][i - 1];
+        s[3][i] += s[3][i - 1];
+    }
+
+    memcpy(offset[0], s[0], ARRAY_SIZE * sizeof(unsigned int));
+    memcpy(offset[1], s[1], ARRAY_SIZE * sizeof(unsigned int));
+    memcpy(offset[2], s[2], ARRAY_SIZE * sizeof(unsigned int));
+    memcpy(offset[3], s[3], ARRAY_SIZE * sizeof(unsigned int));
+
+    sort_step(m, m_temp, offset[0], 0, length);
+    sort_step(m_temp, m, offset[1], 8, length);
+    sort_step(m, m_temp, offset[2], 16, length);
+    sort_step(m_temp, m, offset[3], 24, length);
+
+    free(m_temp);
 }

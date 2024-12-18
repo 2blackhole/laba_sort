@@ -4,6 +4,13 @@ import matplotlib as plt
 import numpy as np
 from packaging.version import parse
 
+#constants
+o2_x_set = list(range(0, 100001, 20000))
+ologn_set = list(range(0, 300000001, 50000000))
+o_x_set = list(range(0, 2000000001, 400000000 ))
+
+
+
 exe_path = 'cmake-build-release/laba_sort.exe'
 
 def parse_string_to_dict(input_string):
@@ -24,7 +31,7 @@ def run_process(exe_file, params):
 
 def get_sort_data(sort, x_set, mode):
     y = list()
-    print('data parsing : ', sort, '\n')
+    print('data parsing : ', sort, mode, '\n')
     for i in x_set:
         params = [sort, str(i), str(mode), '0']
         output = run_process(exe_path, params)

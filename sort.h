@@ -8,6 +8,12 @@ struct bucket
     int* values;
 };
 
+
+#define BYTE_SIZE 8
+#define LONGWORD_SIZE 4
+#define ARRAY_SIZE 256
+
+
 void swap(double* i, double* j);
 
 int partition_l(double *arr, int start, int end);
@@ -34,6 +40,6 @@ void quick_sort(double *arr, int start, int end);
 
 void counting_sort(int *arr, size_t n);
 
-void radix_sort(int *arr, size_t n);
+void radix_sort(unsigned int *m, size_t length);
 
 void bucket_sort(int *arr, size_t n);

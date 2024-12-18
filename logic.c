@@ -39,9 +39,9 @@ int* generate_array_int(array_key array_key, size_t n) {
         return array;
     }
     else if(array_key == SORTED) {
-        array[0] = ((int)rand()) % (int)R_MAX;
+        array[0] = ((int)rand()) % (int)(R_MAX / 5);
         for (int i = 1; i < n; i++) {
-            array[i] = array[i - 1] + (((int)rand()) % 5);
+            array[i] = array[i - 1] + 1;
         }
         return array;
     }
