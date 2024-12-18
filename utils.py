@@ -26,10 +26,10 @@ def get_sort_data(sort, x_set, mode):
     y = list()
     print('data parsing : ', sort, '\n')
     for i in x_set:
-        print(i / max(x_set) * 100, '%\n')
         params = [sort, str(i), str(mode), '0']
         output = run_process(exe_path, params)
         data = parse_string_to_dict(output)
+        print(i / max(x_set) * 100, '%\n')
         y.append(float(data['time']))
     return y
 

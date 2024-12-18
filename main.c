@@ -28,7 +28,11 @@ int main(const int argc, char **argv) {
         test_int(counting_sort, atoll(argv[2]), atoi(argv[3]), atoi(argv[4]));
     }
     else if (strcmp(argv[1], "radix_sort") == 0) {
-        test_int(counting_sort, atoll(argv[2]), atoi(argv[3]), atoi(argv[4]));
+        test_int(radix_sort, atoll(argv[2]), atoi(argv[3]), atoi(argv[4]));
     }
+    else if (strcmp(argv[1], "bucket_sort") == 0) {
+        test_int(bucket_sort, atoll(argv[2]), atoi(argv[3]), atoi(argv[4]));
+    }
+
     return 0;
 }

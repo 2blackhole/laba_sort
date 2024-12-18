@@ -9,6 +9,16 @@ void swap(double *a, double *b) {
     *b = temp;
 }
 
+int max_int(int* arr, size_t n) {
+    int max = INT_MIN;
+    for (int i = 0; i < n; i++) {
+        if (arr[i] > max)
+            max = arr[i];
+    }
+    return max;
+}
+
+
 void merge(double *left_arr, int ln, double *right_arr, int rn, double* arr) {
     int i = 0, l = 0, r = 0;
     while (l < ln && r < rn) {
@@ -72,14 +82,16 @@ void bubble_sort(double *arr, int n) {
 }
 
 void selection_sort(double *arr, int n) {
-    for (int i = 0; i < n; i++) {
-        int min = i;
+    for (int i = 0; i < n - 1; i++) {
+        int min_i = i;
         for (int j = i + 1; j < n; j++) {
-            if (arr[min] > arr[j]) {
-                min = j;
+            if (arr[j] < arr[min_i]) {
+
+                min_i = j;
             }
-            swap(&arr[min], &arr[i]);
         }
+
+        swap(&arr[i], &arr[min_i]);
     }
 }
 
@@ -168,31 +180,116 @@ void quick_sort(double *arr, int start, int end) {
 
 void counting_sort(int *arr, size_t n)
 {
-    int i;
-    int p = 0;
-    int min = 2e9;
-    int max = -2e9;
-    for (i = 0; i < n; ++i)
-    {
-        if (arr[i] < min)
-            min = arr[i];
-        if (arr[i] > max)
-            max = arr[i];
+    // int i;
+    // int p = 0;
+    // int min = 2e9;
+    // int max = -2e9;
+    // for (i = 0; i < n; ++i)
+    // {
+    //     if (arr[i] < min)
+    //         min = arr[i];
+    //     if (arr[i] > max)
+    //         max = arr[i];
+    // }
+    //
+    // int* auxArr = (int*) malloc((max - min + 1) * sizeof(int));
+    // for (i = 0; i <= max - min; ++i)
+    //     auxArr[i] = 0;
+    // for (i = 0; i < n; ++i)
+    //     ++auxArr[arr[i] - min];
+    //
+    // for (i = 0; i <= max - min; ++i)
+    // {
+    //     while (auxArr[i]--)
+    //     {
+    //         arr[p++] = min + i;
+    //     }
+    // }
+    //
+    // free(auxArr);
+    int max = max_int(arr, n);
+
+    int* a = (int*)malloc(sizeof(int) * max + 1);
+
+    for (int i = 0; i <= max; i++) {
+        a[i] = 0;
     }
 
-    int* auxArr = (int*) malloc((max - min + 1) * sizeof(int));
-    for (i = 0; i <= max - min; ++i)
-        auxArr[i] = 0;
-    for (i = 0; i < n; ++i)
-        ++auxArr[arr[i] - min];
+    for (int i = 0; i < n; i++) {
+        a[arr[i]]++;
+    }
 
-    for (i = 0; i <= max - min; ++i)
-    {
-        while (auxArr[i]--)
-        {
-            arr[p++] = min + i;
+    int j = 0;
+    for (int i = 0; i <= max; i++) {
+        while (a[i] > 0) {
+            arr[j++] = i;
+            a[i]--;
         }
     }
 
-    free(auxArr);
+    free(a);
+}
+
+void radix_sort(int* arr, size_t n) {
+    // int max = max_int(arr, n);
+    // int auxArr[10];
+    //
+    // int i = 0;
+    // while (max / (i * 10) != 0);
+    //IN PROGRESS
+}
+
+
+
+int compare_int(const void* first, const void* second)
+{
+    int a = *((int*)first), b =  *((int*)second);
+    if (a == b)
+    {
+        return 0;
+    }
+    else if (a < b)
+    {
+        return -1;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
+void bucket_sort(int* arr, size_t n)
+{
+    struct bucket buckets[3];
+    int i, j, k;
+    for (i = 0; i < 3; i++)
+    {
+        buckets[i].count = 0;
+        buckets[i].values = (int*)malloc(sizeof(int) * n);
+    }
+    for (i = 0; i < n; i++)
+    {
+        if (arr[i] < 0)
+        {
+            buckets[0].values[buckets[0].count++] = arr[i];
+        }
+        else if (arr[i] > 10)
+        {
+            buckets[2].values[buckets[2].count++] = arr[i];
+        }
+        else
+        {
+            buckets[1].values[buckets[1].count++] = arr[i];
+        }
+    }
+    for (k = 0, i = 0; i < 3; i++)
+    {
+        qsort(buckets[i].values, buckets[i].count, sizeof(int), &compare_int);
+        for (j = 0; j < buckets[i].count; j++)
+        {
+            arr[k + j] = buckets[i].values[j];
+        }
+        k += buckets[i].count;
+        free(buckets[i].values);
+    }
 }
