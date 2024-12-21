@@ -6,7 +6,7 @@ from packaging.version import parse
 
 #constants
 o2_x_set = list(range(0, 100001, 20000))
-ologn_set = list(range(0, 300000001, 50000000))
+ologn_x_set = list(range(0, 300000001, 50000000))
 o_x_set = list(range(0, 2000000001, 400000000 ))
 
 
